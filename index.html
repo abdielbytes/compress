@@ -27,7 +27,32 @@
         const quality = document.getElementById('quality').value / 100; //convert range btw 0 1
 
         if(imageInput){
-            const reader = new FileReader
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    canvas.toBlob(function (blob) {
+                        const compressedImageUrl = URL.createObjectURL(blob);
+                        document.getElementById('outputImage').src = compressedImageUrl;
+                        document.getElementById('outputImage').style.display = 'block';
+                        document.getElementById('downloadLink').href = compressedImageUrl;
+                        document.getElementById('downloadLink').style.display = 'block';
+                    }, 'image/jpeg', quality);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(imageInput);
+        } else {
+            alert('Please select an image.');
+        }
+    });
+            }
         }
     
     })
