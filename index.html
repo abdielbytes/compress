@@ -38,20 +38,17 @@
                     ctx.drawImage(img, 0, 0);
 
                     canvas.toBlob(function (blob) {
-                        const compressedImageUrl = URL.createObjectURL(blob);
-                        document.getElementById('outputImage').src = compressedImageUrl;
-                        document.getElementById('outputImage').style.display = 'block';
-                        document.getElementById('downloadLink').href = compressedImageUrl;
-                        document.getElementById('downloadLink').style.display = 'block';
-                    }, 'image/jpeg', quality);
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(imageInput);
-        } else {
-            alert('Please select an image.');
-        }
-    });
+                        const downloadLink = document.getElementById('downloadLink');
+                        const outputImage = document.getElementById('outputImage');
+                        const url = URL.createObjectURL(blob);
+
+                        downloadLink.href = url;
+                        downloadLink.style.display = 'inline';
+                        downloadLink.textContent = 'Download Compressed Image';
+
+                        outputImage.src = url;
+                        outputImage.style.display = 'inline';
+                        
             }
         }
     
